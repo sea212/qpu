@@ -9,9 +9,9 @@ language: python
 #  system_site_packages: true
 matrix:
   include:
-    - os: linux
-      python: 3.4
-      env: TOXARGS="-e py34,lint" DISTRIB="ubuntu" COVERAGE="false"
+    # - os: linux
+    #  python: 3.4
+    #  env: TOXARGS="-e py34,lint" DISTRIB="ubuntu" COVERAGE="false"
     - os: linux
       python: 3.7
       env: TOXARGS="-e py37,lint" DISTRIB="ubuntu" COVERAGE="true"
