@@ -2,12 +2,13 @@
 # Read more under http://docs.travis-ci.com/user/build-configuration/
 # THIS SCRIPT IS SUPPOSED TO BE AN EXAMPLE. MODIFY IT ACCORDING TO YOUR NEEDS!
 
-sudo: false
+# sudo: false
+os: linux
 dist: xenial
 language: python
 # virtualenv:
 #  system_site_packages: true
-matrix:
+jobs:
   include:
     # - os: linux
     #  python: 3.4
@@ -15,6 +16,11 @@ matrix:
     - os: linux
       python: 3.7
       env: TOXARGS="-e py37,lint" DISTRIB="ubuntu" COVERAGE="true"
+      addons:
+        apt:
+          packages:
+            - gfortran
+
 install:
   - source tests/travis_install.sh
   - travis_retry pip install pip setuptools --upgrade
@@ -22,9 +28,13 @@ install:
   - if [[ "$COVERAGE" == "true" ]]; then travis_retry pip install coveralls; fi
   - wget https://github.com/ninja-build/ninja/releases/download/v1.10.0/ninja-linux.zip
   - unzip ninja-linux.zip
-  - wget http://www.netlib.org/blas/blas-3.8.0.tgz
-  - tar -xzvf blas-3.8.0.tgz
   - export PATH=$PATH:$PWD
+  - wget https://netix.dl.sourceforge.net/project/openblas/v0.3.9/OpenBLAS%200.3.9%20version.tar.gz
+  - tar -xzf OpenBLAS\ 0.3.9\ version.tar.gz
+  - COMMON_FLAGS="NUM_THREADS=32"
+  - cd xianyi-OpenBLAS-33f76a6
+  - make
+  - make install
   # ^  DEPRECATION WARNING:
   # The automatic creation of a `requirements.txt` file is deprecated.
   # See `Dependency Management` in the docs for other options.
