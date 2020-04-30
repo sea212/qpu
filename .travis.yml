@@ -20,6 +20,11 @@ install:
   - travis_retry pip install pip setuptools --upgrade
   - travis_retry pip install tox
   - if [[ "$COVERAGE" == "true" ]]; then travis_retry pip install coveralls; fi
+  - wget https://github.com/ninja-build/ninja/releases/download/v1.10.0/ninja-linux.zip
+  - unzip ninja-linux.zip
+  - wget http://www.netlib.org/blas/blas-3.8.0.tgz
+  - tar -xzvf blas-3.8.0.tgz
+  - export PATH=$PATH:$PWD
   # ^  DEPRECATION WARNING:
   # The automatic creation of a `requirements.txt` file is deprecated.
   # See `Dependency Management` in the docs for other options.
