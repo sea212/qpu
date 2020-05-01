@@ -2,7 +2,7 @@
 # Read more under http://docs.travis-ci.com/user/build-configuration/
 # THIS SCRIPT IS SUPPOSED TO BE AN EXAMPLE. MODIFY IT ACCORDING TO YOUR NEEDS!
 
-# sudo: false
+# sudo: true
 os: linux
 dist: xenial
 language: python
@@ -16,28 +16,32 @@ jobs:
     - os: linux
       python: 3.7
       env: TOXARGS="-e py37,lint" DISTRIB="ubuntu" COVERAGE="true"
-      addons:
-        apt:
-          packages:
-            - gfortran
+
+addons:
+  apt:
+    packages:
+      - gfortran
+
+cache:
+  directories:
+  - ${TRAVIS_BUILD_DIR}/.travis/OpenBLAS.cache
+  - ${TRAVIS_BUILD_DIR}/.travis/$TRAVIS_OS_NAME/OpenBLAS
+
 
 install:
   - source tests/travis_install.sh
   - travis_retry pip install pip setuptools --upgrade
   - travis_retry pip install tox
   - if [[ "$COVERAGE" == "true" ]]; then travis_retry pip install coveralls; fi
-  - wget https://github.com/ninja-build/ninja/releases/download/v1.10.0/ninja-linux.zip
-  - unzip ninja-linux.zip
-  - export PATH=$PATH:$PWD
-  - wget https://netix.dl.sourceforge.net/project/openblas/v0.3.9/OpenBLAS%200.3.9%20version.tar.gz
-  - tar -xzf OpenBLAS\ 0.3.9\ version.tar.gz
-  - COMMON_FLAGS="NUM_THREADS=32"
-  - cd xianyi-OpenBLAS-33f76a6
-  - make
-  - make install
+  - if [ ! -e ninjalib/ninja ]; then
+    wget https://github.com/ninja-build/ninja/releases/download/v1.10.0/ninja-linux.zip &&
+    unzip ninja-linux.zip -d ninjalib; fi
+  - export PATH=$PATH:$PWD/ninjalib
+  - source ${TRAVIS_BUILD_DIR}/.travis/$TRAVIS_OS_NAME/OpenBLAS/install.sh
   # ^  DEPRECATION WARNING:
   # The automatic creation of a `requirements.txt` file is deprecated.
   # See `Dependency Management` in the docs for other options.
+
 before_script:
   # - git config --global user.email "you@example.com"
   # - git config --global user.name "Your Name"
@@ -45,14 +49,18 @@ before_script:
   - python --version
   - pip --version
   - pip freeze
+
 script:
   # - python setup.py test
   # ^  Change here if using tox
   - tox $TOXARGS
+
 after_success:
   - if [[ "$COVERAGE" == "true" ]]; then coveralls || echo "failed"; fi
+
 after_script:
   - travis-cleanup
+
 cache:
   pip: true
   directories:

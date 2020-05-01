@@ -29,6 +29,10 @@ def simulate(circuit: QuantumCircuit, steps: int = 3200) -> Result:
     return job.result()
 
 
+def run(circuit: QuantumCircuit, steps: int = 3200, api_key: str = None) -> Result:
+    raise NotImplementedError()
+
+
 def getCircuitAscii(circuit: QuantumCircuit) -> str:
     # Draw the circuit
     return circuit.draw()
