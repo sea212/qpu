@@ -5,7 +5,7 @@ from qiskit.result.result import Result
 from qiskit.visualization import plot_histogram
 
 
-def generate(bits: int = 5) -> QuantumCircuit:
+def generate(bits: int = 3) -> QuantumCircuit:
     # Create a Quantum Circuit acting on the q register
     circuit = QuantumCircuit(bits, bits)
 
@@ -18,7 +18,7 @@ def generate(bits: int = 5) -> QuantumCircuit:
     return circuit
 
 
-def simulate(circuit: QuantumCircuit, steps: int = 3200) -> Result:
+def simulate(circuit: QuantumCircuit, steps: int = 8000) -> Result:
     # Use Aer's qasm_simulator
     simulator = Aer.get_backend('qasm_simulator')
 
@@ -29,7 +29,7 @@ def simulate(circuit: QuantumCircuit, steps: int = 3200) -> Result:
     return job.result()
 
 
-def run(circuit: QuantumCircuit, steps: int = 3200, api_key: str = None) -> Result:
+def run(circuit: QuantumCircuit, steps: int = 8000, api_key: str = None) -> Result:
     raise NotImplementedError()
 
 
