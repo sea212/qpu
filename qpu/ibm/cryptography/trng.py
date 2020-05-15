@@ -43,7 +43,7 @@ def _get_qpu_candidates(backends: List[IBMQBackend], circuit: QuantumCircuit) ->
             continue
 
         # Enough qubits?
-        if len(backend.properties()._gates) < circuit.n_qubits:
+        if len(backend.properties().qubits) < circuit.n_qubits:
             continue
 
         # Enough remaining jobs?
