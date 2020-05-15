@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from typing import Dict
 
+import matplotlib.pyplot as plt
 from dimod import BinaryQuadraticModel
 from dimod.sampleset import SampleSet
 from neal import SimulatedAnnealingSampler
@@ -46,5 +47,15 @@ def getResult(result: SampleSet) -> Dict[str, int]:
     return OrderedDict(sorted(newres.items()))
 
 
-def plotResult(model: BinaryQuadraticModel, result: SampleSet) -> None:
-    raise NotImplementedError()
+def plotResult(result: SampleSet) -> None:
+    ores = getResult(result)
+    occurences = ores.values()
+    totalocc = sum(occurences)
+    occurences = [num/totalocc for num in occurences]
+    fig, ax = plt.subplots()
+    ax.bar(ores.keys(), occurences, width=0.4, label='Number')
+    ax.set_ylabel('Probability')
+    ax.set_title('Probability distribution of quantum number generator')
+    ax.legend()
+
+    plt.show()
