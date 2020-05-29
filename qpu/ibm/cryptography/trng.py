@@ -9,7 +9,7 @@ from qiskit.visualization import plot_histogram
 SortedBackendList = List[IBMQBackend]
 
 
-def generate(bits: int = 3) -> QuantumCircuit:
+def generate(bits: int = 5) -> QuantumCircuit:
     # Create a Quantum Circuit acting on the q register
     circuit = QuantumCircuit(bits, bits)
 
@@ -66,7 +66,7 @@ def _run(backend: IBMQBackend, circuit: QuantumCircuit) -> Result:
 
 
 # TODO: Convert to async function
-def run(circuit: QuantumCircuit, steps: int = 8000, api_key: str = None) -> Result:
+def run(circuit: QuantumCircuit, api_key: str = None, steps: int = 1) -> Result:
     # TODO: Think about moving the api_key to __init__ after converting this to a class
     # Use stored or supplied token
     try:
